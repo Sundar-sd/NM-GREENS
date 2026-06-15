@@ -182,7 +182,7 @@ export default function VaultModal({ onClose }) {
 
               <div className="vault-balance-card">
                 <span className="vault-balance-label">New Balance</span>
-                <span className="vault-balance-value">₹{((user?.vaultBalance || 0) + val).toLocaleString("en-IN")}</span>
+                <span className="vault-balance-value">₹{(user?.vaultBalance || 0).toLocaleString("en-IN")}</span>
               </div>
 
               <button className="btn-primary vault-add-btn" onClick={onClose}>
