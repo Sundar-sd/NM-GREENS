@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { HiChartBar, HiBookOpen, HiCollection, HiClock, HiCash } from "react-icons/hi";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.png";
 
 const links = [
   { to: "/admin", icon: HiChartBar, label: "Dashboard", end: true },

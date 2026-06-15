@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.png";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });

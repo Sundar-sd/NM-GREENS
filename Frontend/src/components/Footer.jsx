@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { HiPhone, HiMail, HiLocationMarker } from "react-icons/hi";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.png";
 
 export default function Footer() {
   return (

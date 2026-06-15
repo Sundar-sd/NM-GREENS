@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX, HiSun, HiMoon } from "react-icons/hi";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,10 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-inner">
-        <Link to="/" className="nav-logo"><img src={logo} alt="NM GREENS" className="nav-logo-img" /></Link>
+        <Link to="/" className="nav-logo">
+          <img src={logo} alt="NM GREENS" className="nav-logo-img" />
+          <span className="nav-logo-text">NM GREENS</span>
+        </Link>
 
         <div className="nav-right">
           <div className="nav-links-desktop">
