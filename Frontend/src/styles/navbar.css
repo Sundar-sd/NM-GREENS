@@ -163,12 +163,16 @@
 
 @media (max-width: 768px) {
   .nav-inner { padding: 0 20px; height: 64px; }
+  .nav-logo-img { height: 50px; }
+  .nav-logo-text { font-size: 1.2rem; }
   .nav-links-desktop { display: none; }
   .hamburger { display: flex; }
   .nav-user { display: none; }
   .nav-login-btn { display: none; }
   .nav-mobile { padding: 0 20px 12px; }
 }
+
+
 
 @media (min-width: 769px) {
   .nav-mobile { display: none !important; }
