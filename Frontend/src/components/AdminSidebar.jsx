@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { HiChartBar, HiBookOpen, HiCollection, HiClock } from "react-icons/hi";
+import { HiChartBar, HiBookOpen, HiCollection, HiClock, HiCash } from "react-icons/hi";
 
 const links = [
   { to: "/admin", icon: HiChartBar, label: "Dashboard", end: true },
   { to: "/admin/bookings", icon: HiBookOpen, label: "Bookings" },
   { to: "/admin/grounds", icon: HiCollection, label: "Grounds" },
   { to: "/admin/slots", icon: HiClock, label: "Slots" },
+  { to: "/admin/pricing", icon: HiCash, label: "Pricing" },
 ];
 
 export default function AdminSidebar() {

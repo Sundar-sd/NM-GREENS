@@ -197,7 +197,18 @@
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.06);
   position: relative;
-  white-space: nowrap;
+}
+
+.chip-label {
+  display: block;
+}
+
+.chip-price {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 3px;
+  color: var(--primary);
 }
 
 .duration-chip:hover:not(.sold):not(.selected) {
@@ -208,10 +219,14 @@
 
 .duration-chip.active {
   border-color: var(--primary);
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  color: white;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25), 0 0 20px rgba(13, 148, 136, 0.15);
+  background: var(--primary-glow);
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25), 0 0 20px rgba(13, 148, 136, 0.1);
   transform: translateY(-2px) scale(1.02);
+}
+
+.duration-chip.active .chip-price {
+  color: inherit;
 }
 
 .duration-chip.selected {

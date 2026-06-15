@@ -10,6 +10,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManageGrounds from "./pages/admin/ManageGrounds";
 import SlotManagement from "./pages/admin/SlotManagement";
+import Pricing from "./pages/admin/Pricing";
+import GroundPricing from "./pages/admin/GroundPricing";
 
 export default function App() {
   return (
@@ -33,6 +35,8 @@ export default function App() {
         <Route path="bookings" element={<ManageBookings />} />
         <Route path="grounds" element={<ManageGrounds />} />
         <Route path="slots" element={<SlotManagement />} />
+        <Route path="pricing" element={<Pricing />} />
+        <Route path="pricing/:groundId" element={<GroundPricing />} />
       </Route>
     </Routes>
   );

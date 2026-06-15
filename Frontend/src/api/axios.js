@@ -70,9 +70,21 @@ const api = {
       return { data: list };
     }
 
-    if (url === "/grounds") return { data: GROUNDS };
-    if (url === "/grounds/cricket") return { data: GROUNDS.find((g) => g.id === "cricket") };
-    if (url === "/grounds/tennis") return { data: GROUNDS.find((g) => g.id === "tennis") };
+    if (url === "/grounds") {
+      const saved = localStorage.getItem("nm_grounds");
+      if (saved) { const p = JSON.parse(saved); GROUNDS.length = 0; GROUNDS.push(...p); }
+      return { data: GROUNDS };
+    }
+    if (url === "/grounds/cricket") {
+      const saved = localStorage.getItem("nm_grounds");
+      if (saved) { const p = JSON.parse(saved); GROUNDS.length = 0; GROUNDS.push(...p); }
+      return { data: GROUNDS.find((g) => g.id === "cricket") };
+    }
+    if (url === "/grounds/tennis") {
+      const saved = localStorage.getItem("nm_grounds");
+      if (saved) { const p = JSON.parse(saved); GROUNDS.length = 0; GROUNDS.push(...p); }
+      return { data: GROUNDS.find((g) => g.id === "tennis") };
+    }
 
     if (url.startsWith("/bookings/check")) {
       const g = params?.groundId || params?.ground;
@@ -138,6 +150,8 @@ const api = {
     }
 
     if (url === "/bookings/my") return { data: getBookings().filter((b) => b.user === params?.userId) };
+
+    if (url === "/admin/gst-rate") return { data: { rate: parseFloat(localStorage.getItem("nm_gst_rate") || 18) } };
 
     if (url === "/admin/slots/restrictions") return { data: getRestrictions() };
 
@@ -212,6 +226,7 @@ const api = {
       const newGround = { _id: "g" + Date.now(), id: "g" + Date.now(), ...data, features: [], images: [], isAvailable: true, maintenanceSlots: [] };
       if (typeof data.features === "string") newGround.features = data.features.split(",").map((s) => s.trim());
       GROUNDS.push(newGround);
+      localStorage.setItem("nm_grounds", JSON.stringify(GROUNDS));
       return { data: newGround };
     }
     console.warn("Unhandled POST:", url);
@@ -259,9 +274,15 @@ const api = {
       if (idx > -1) {
         if (typeof data.features === "string") data.features = data.features.split(",").map((s) => s.trim());
         Object.assign(GROUNDS[idx], data);
+        localStorage.setItem("nm_grounds", JSON.stringify(GROUNDS));
       }
       return { data: GROUNDS[idx] };
     }
+    if (url === "/admin/gst-rate") {
+      localStorage.setItem("nm_gst_rate", String(data.rate));
+      return { data: { rate: data.rate } };
+    }
+
     if (url.startsWith("/admin/slots/block/")) {
       const id = url.split("/")[4];
       const restrictions = getRestrictions();
@@ -294,7 +315,7 @@ const api = {
     if (url.startsWith("/grounds/")) {
       const id = url.split("/")[2];
       const idx = GROUNDS.findIndex((g) => g._id === id || g.id === id);
-      if (idx > -1) GROUNDS.splice(idx, 1);
+      if (idx > -1) { GROUNDS.splice(idx, 1); localStorage.setItem("nm_grounds", JSON.stringify(GROUNDS)); }
       return { data: { message: "Deleted" } };
     }
     console.warn("Unhandled DELETE:", url);

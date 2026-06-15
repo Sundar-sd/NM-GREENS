@@ -2,8 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { HiX, HiCheck, HiCash, HiCreditCard, HiShieldCheck } from "react-icons/hi";
 import { useAuth } from "../context/AuthContext";
-import { calculatePrice } from "../utils/helpers";
-import { to12Hour } from "../utils/helpers";
+import { getBookingTotal, to12Hour } from "../utils/helpers";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 
@@ -20,10 +19,11 @@ export default function PaymentModal({ bookingData, ground, onSuccess, onClose }
   const [selectedUpiApp, setSelectedUpiApp] = useState(null);
   const [processing, setProcessing] = useState(false);
 
-  const { subtotal, platformFee, gst, finalAmount } = calculatePrice(
-    ground?.price || 0,
-    parseInt(bookingData.duration) || 0
-  );
+  const { subtotal, platformFee, gst, finalAmount } = getBookingTotal(ground, {
+    date: bookingData.date,
+    startTime: bookingData.startTime,
+    duration: bookingData.duration,
+  });
   const vaultBalance = user?.vaultBalance || 0;
   const round2 = (n) => Math.round(n * 100) / 100;
   const vaultShortfall = round2(vaultBalance) < round2(finalAmount) ? round2(finalAmount - vaultBalance) : 0;
@@ -114,7 +114,7 @@ export default function PaymentModal({ bookingData, ground, onSuccess, onClose }
             <span>₹{platformFee.toFixed(2)}</span>
           </div>
           <div className="price-row gst-row">
-            <span>GST (18%)</span>
+            <span>GST ({Number(localStorage.getItem("nm_gst_rate")) || 18}%)</span>
             <span className="gst-added">+₹{gst.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
           </div>
           <div className="price-row discount-row">

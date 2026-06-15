@@ -5,7 +5,7 @@ import { HiCheckCircle, HiXCircle, HiArrowRight, HiExclamationCircle } from "rea
 import toast from "react-hot-toast";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { to12Hour, isWeekend, isTodayWeekend } from "../utils/helpers";
+import { to12Hour, isWeekend, isTodayWeekend, getCricketKey, getBookingTotal } from "../utils/helpers";
 import PaymentModal from "../components/PaymentModal";
 import GoldLockIcon from "../components/common/GoldLockIcon";
 
@@ -50,22 +50,12 @@ const TENNIS_SLOTS = [
 ];
 const allSlots = TENNIS_SLOTS.flatMap(sec => sec.slots);
 
-const GROUNDS = [
-  { id: "cricket", name: "Cricket Ball Ground", image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=1200&q=80", price: 500 },
-  { id: "tennis", name: "Tennis Ball Ground", image: "https://images.unsplash.com/photo-1624526267942-ab0ff8a3e972?w=1200&q=80", price: 300 },
-];
+
 
 function timeToMinutes(t) {
   if (!t) return 0;
   const [h, m] = t.split(":").map(Number);
   return h * 60 + m;
-}
-
-function getCricketKey(duration, startTime) {
-  if (duration === "24") return "24";
-  if (duration === "12" && startTime === "06:00") return "12_06";
-  if (duration === "12" && startTime === "18:00") return "12_18";
-  return null;
 }
 
 function hasOverlap(st1, et1, st2, et2) {
@@ -113,6 +103,11 @@ export default function Booking() {
   const [soldOptions, setSoldOptions] = useState([]);
   const [blockedOptions, setBlockedOptions] = useState([]);
   const [selectedSlots, setSelectedSlots] = useState([]);
+  const [groundList, setGroundList] = useState([]);
+
+  useEffect(() => {
+    api.get("/grounds").then(r => setGroundList(r.data)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const g = searchParams.get("ground");
@@ -270,7 +265,13 @@ export default function Booking() {
     }
   }
 
-  const selectedGround = GROUNDS.find((g) => g.id === form.groundId);
+  const selectedGround = groundList.find((g) => g.id === form.groundId);
+
+  const bookingPrice = getBookingTotal(selectedGround, {
+    date: form.date,
+    startTime: form.startTime,
+    duration: form.duration,
+  });
 
   const now = new Date();
   const todayStr = now.toISOString().split("T")[0];
@@ -432,7 +433,7 @@ export default function Booking() {
 
   return (
     <section className="booking-page">
-      <div className="booking-hero" style={{ backgroundImage: `url(${selectedGround?.image || GROUNDS[0].image})` }}>
+      <div className="booking-hero" style={{ backgroundImage: `url(${selectedGround?.images?.[0] || groundList[0]?.images?.[0] || ""})` }}>
         <div className="booking-hero-overlay" />
         <div className="booking-hero-content">
           <h1>{selectedGround ? selectedGround.name : "Select a Ground"}</h1>
@@ -447,7 +448,7 @@ export default function Booking() {
           <div className="form-group">
             <label>Ground</label>
             <div className="ground-selector">
-              {GROUNDS.map((g) => (
+              {groundList.map((g) => (
                 <button
                   type="button"
                   key={g.id}
@@ -455,7 +456,9 @@ export default function Booking() {
                   onClick={() => setForm((p) => ({ ...p, groundId: g.id, duration: "", startTime: "" }))}
                 >
                   <span className="ground-option-name">{g.name}</span>
-                  <span className="ground-option-price">₹{g.price}/hr</span>
+                  <span className="ground-option-price">
+                    {g.type === "cricket" ? `₹${g.pricePerHour}/hr · Packages` : `₹${g.pricePerHour}/hr`}
+                  </span>
                 </button>
               ))}
             </div>
@@ -513,6 +516,7 @@ export default function Booking() {
                       const optEnd = parseInt(opt.duration) * 60 + timeToMinutes(opt.startTime);
                       const isPast = form.date === todayStr && m >= optEnd;
                       const disabled = isBlocked || isSold || isPast;
+                      const optPrice = getBookingTotal(selectedGround, { date: form.date, startTime: opt.startTime, duration: opt.duration });
                       return (
                         <button
                           type="button"
@@ -525,7 +529,8 @@ export default function Booking() {
                           disabled={disabled}
                           title={isBlocked ? "Blocked by Admin" : isSold ? "Sold (Already Booked)" : isPast ? "Time is Past" : "Available"}
                         >
-                          {opt.label}
+                          <span className="chip-label">{opt.label}</span>
+                          <span className="chip-price">₹{optPrice.subtotal.toLocaleString("en-IN")}</span>
                           {isBlocked && <span className="locked-badge"><GoldLockIcon size={16} /></span>}
                           {!isBlocked && isSold && <span className="sold-badge">Sold</span>}
                         </button>
@@ -615,13 +620,19 @@ export default function Booking() {
               <div className="summary-divider" />
               <div className="summary-row">
                 <span>Rate</span>
-                <span>{selectedGround ? `₹${selectedGround.price}/hr` : "—"}</span>
+                <span>
+                  {selectedGround
+                    ? bookingPrice.isSlotPricing
+                      ? `₹${bookingPrice.subtotal.toLocaleString("en-IN")} (flat)`
+                      : `₹${bookingPrice.effectiveRate}/hr × ${form.duration || 0}hrs`
+                    : "—"}
+                </span>
               </div>
               <div className="summary-total-row">
                 <span>Total</span>
                 <span className="total-amount">
-                  ₹{selectedGround && form.duration
-                    ? (selectedGround.price * parseInt(form.duration)).toLocaleString("en-IN")
+                  {selectedGround && form.duration
+                    ? `₹${bookingPrice.subtotal.toLocaleString("en-IN")}`
                     : "—"}
                 </span>
               </div>
