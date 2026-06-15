@@ -1,4 +1,4 @@
-import { GROUNDS, BOOKING_STATS, REVENUE_DATA, SAMPLE_BOOKINGS, SAMPLE_USERS, SLOT_RESTRICTIONS } from "../utils/mockData";
+import { GROUNDS, SAMPLE_BOOKINGS, SAMPLE_USERS, SLOT_RESTRICTIONS } from "../utils/mockData";
 
 function getBookings() {
   const d = localStorage.getItem("nm_bookings");
@@ -51,11 +51,58 @@ function pushNotification(notification) {
 
 function delay(ms = 200) { return new Promise((r) => setTimeout(r, ms)); }
 
+function getDashboardStats() {
+  const bookings = getBookings();
+  const users = getUsers();
+  const today = new Date().toISOString().split("T")[0];
+  const totalBookings = bookings.length;
+  const todayBookings = bookings.filter((b) => b.date === today).length;
+  const totalRevenue = bookings.reduce((sum, b) => sum + (b.totalPrice || 0), 0);
+  const activeUsers = users.filter((u) => u.status === "active").length;
+  const todayActive = bookings.filter((b) => b.date === today && b.status !== "cancelled" && b.status !== "rejected");
+  const occupiedSlots = todayActive.length;
+  const totalSlots = 27;
+  const availableSlots = Math.max(0, totalSlots - occupiedSlots);
+  return { totalBookings, todayBookings, totalRevenue, activeUsers, availableSlots, occupiedSlots };
+}
+
+function getRevenueStats() {
+  const bookings = getBookings();
+  const monthlyMap = {};
+  const trendMap = {};
+  const groundCount = {};
+  const hourCount = {};
+  bookings.forEach((b) => {
+    if (!b.date) return;
+    const month = b.date.substring(0, 7);
+    monthlyMap[month] = monthlyMap[month] || { _id: month, revenue: 0, count: 0 };
+    monthlyMap[month].revenue += b.totalPrice || 0;
+    monthlyMap[month].count++;
+    trendMap[b.date] = trendMap[b.date] || { _id: b.date, count: 0, revenue: 0 };
+    trendMap[b.date].count++;
+    trendMap[b.date].revenue += b.totalPrice || 0;
+    const name = b.groundName || "Unknown";
+    groundCount[name] = (groundCount[name] || 0) + 1;
+    if (b.startTime) {
+      const hour = b.startTime.split(":")[0];
+      hourCount[hour] = (hourCount[hour] || 0) + 1;
+    }
+  });
+  const monthlyRevenue = Object.values(monthlyMap).sort((a, b) => a._id.localeCompare(b._id));
+  const bookingTrends = Object.values(trendMap).sort((a, b) => a._id.localeCompare(b._id));
+  const mostBookedEntry = Object.entries(groundCount).sort((a, b) => b[1] - a[1])[0];
+  const mostBooked = mostBookedEntry ? { _id: mostBookedEntry[0], count: mostBookedEntry[1] } : null;
+  const peakHours = Object.entries(hourCount)
+    .map(([h, c]) => ({ _id: h, count: c }))
+    .sort((a, b) => b.count - a.count);
+  return { monthlyRevenue, peakHours, mostBooked, bookingTrends };
+}
+
 const api = {
   async get(url, { params } = {}) {
     await delay();
-    if (url === "/admin/dashboard") return { data: BOOKING_STATS };
-    if (url === "/admin/revenue") return { data: REVENUE_DATA };
+    if (url === "/admin/dashboard") return { data: getDashboardStats() };
+    if (url === "/admin/revenue") return { data: getRevenueStats() };
     if (url === "/admin/notifications") return { data: getNotifications() };
 
     if (url === "/admin/bookings") {
