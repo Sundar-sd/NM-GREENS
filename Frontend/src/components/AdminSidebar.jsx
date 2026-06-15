@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { HiChartBar, HiBookOpen, HiCollection, HiClock, HiCash } from "react-icons/hi";
+import logo from "../assets/logo.jpeg";
 
 const links = [
   { to: "/admin", icon: HiChartBar, label: "Dashboard", end: true },
@@ -12,7 +13,7 @@ const links = [
 export default function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
-      <div className="sidebar-brand">NM GREENS</div>
+      <div className="sidebar-brand"><img src={logo} alt="NM GREENS" className="sidebar-logo-img" /></div>
       <nav className="sidebar-nav">
         {links.map((l) => (
           <NavLink

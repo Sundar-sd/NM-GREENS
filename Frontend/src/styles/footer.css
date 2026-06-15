@@ -12,14 +12,12 @@
 }
 
 .footer-brand h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  font-weight: 800;
   margin-bottom: 12px;
-  background: linear-gradient(135deg, #14b8a6, #5eead4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+}
+
+.footer-logo-img {
+  height: 48px;
+  width: auto;
 }
 
 .footer-brand p {

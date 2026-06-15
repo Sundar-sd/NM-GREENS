@@ -6,6 +6,7 @@ import Reveal from "../components/common/Reveal";
 import Counter from "../components/common/Counter";
 import { useAuth } from "../context/AuthContext";
 import VaultModal from "../components/VaultModal";
+import logo from "../assets/logo.jpeg";
 
 const features = [
   { icon: HiLightningBolt, title: "Instant Booking", desc: "Book in under 2 minutes" },
@@ -165,14 +166,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            NM Greens
+<img src={logo} alt="NM GREENS" className="hero-logo-img" />
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            NM Greens Sports
+            Sports
             <br />
             <span className="gradient-text">Booking Platform</span>
           </motion.h1>

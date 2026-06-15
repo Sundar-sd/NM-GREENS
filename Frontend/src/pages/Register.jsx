@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.jpeg";
 
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "" });
@@ -47,7 +48,7 @@ export default function Register() {
         transition={{ duration: 0.5 }}
       >
         <div className="auth-header">
-          <Link to="/" className="auth-logo">NM GREENS</Link>
+          <Link to="/" className="auth-logo"><img src={logo} alt="NM GREENS" className="auth-logo-img" /></Link>
           <h2>Create Account</h2>
           <p>Join NM Greens today</p>
         </div>

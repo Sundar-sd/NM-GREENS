@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.jpeg";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -39,7 +40,7 @@ export default function Login() {
         transition={{ duration: 0.5 }}
       >
         <div className="auth-header">
-          <Link to="/" className="auth-logo">NM GREENS</Link>
+          <Link to="/" className="auth-logo"><img src={logo} alt="NM GREENS" className="auth-logo-img" /></Link>
           <h2>Welcome Back</h2>
           <p>Sign in to your account</p>
         </div>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { HiPhone, HiMail, HiLocationMarker } from "react-icons/hi";
+import logo from "../assets/logo.jpeg";
 
 export default function Footer() {
   return (
@@ -7,7 +8,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <h3>NM GREENS</h3>
+            <h3><img src={logo} alt="NM GREENS" className="footer-logo-img" /></h3>
             <p>Premium Cricket and Tennis Ball Ground booking platform. Book your game, play your way.</p>
           </div>
 
