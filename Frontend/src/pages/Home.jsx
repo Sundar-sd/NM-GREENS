@@ -6,7 +6,7 @@ import Reveal from "../components/common/Reveal";
 import Counter from "../components/common/Counter";
 import { useAuth } from "../context/AuthContext";
 import VaultModal from "../components/VaultModal";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.png";
 
 const features = [
   { icon: HiLightningBolt, title: "Instant Booking", desc: "Book in under 2 minutes" },
@@ -159,15 +159,12 @@ export default function Home() {
       {/* ─── Hero ─── */}
       <section className="home-hero">
         <div className="home-hero-bg" />
+        <div className="hero-watermark">
+          <div className="hero-watermark-glow" />
+          <img src={logo} alt="" className="hero-watermark-img" />
+        </div>
+        <div className="hero-glass" />
         <div className="home-hero-content">
-          <motion.span
-            className="section-tag"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-<img src={logo} alt="NM GREENS" className="hero-logo-img" />
-          </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

@@ -32,7 +32,7 @@
 
 .home-hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 800px;
 }
 
@@ -59,9 +59,49 @@
 }
 
 .hero-logo-img {
-  height: 80px;
+  display: none;
+}
+
+.hero-watermark {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-watermark-img {
+  height: 75vh;
   width: auto;
-  margin-bottom: 20px;
+  opacity: 0.18;
+  filter: blur(1px);
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-watermark-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.12), transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  backdrop-filter: blur(1.5px);
+  pointer-events: none;
 }
 
 .hero-buttons {
@@ -389,6 +429,8 @@
   .home-hero-content h1 { font-size: clamp(2.2rem, 10vw, 3.5rem); }
   .home-hero-content p { font-size: 1rem; margin-bottom: 32px; }
   .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-watermark-img { height: 50vh; }
+  .hero-watermark-glow { width: 300px; height: 300px; }
   .features-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .feature-card { padding: 24px 16px; }
   .showcase-grid { grid-template-columns: 1fr; }
