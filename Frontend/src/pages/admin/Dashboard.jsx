@@ -159,8 +159,7 @@ export default function Dashboard() {
             {notifications.slice(0, 5).map((n) => (
               <div key={n._id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "var(--section-bg)", borderRadius: "var(--radius)", fontSize: "0.85rem" }}>
                 <span>
-                  <strong>{n.name}</strong> booked <strong>{n.groundName}</strong>
-                  {n.status === "cancelled" && " (cancelled)"}
+                  <strong>{n.name}</strong> {n.message || "booked"} <strong>{n.groundName}</strong>
                 </span>
                 <span style={{ color: "var(--text-light)", fontSize: "0.8rem" }}>
                   {new Date(n.createdAt).toLocaleDateString()}

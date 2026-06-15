@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 export default function Layout() {
   const location = useLocation();
-  const hideFooter = location.pathname === "/booking";
+  const hideFooter = location.pathname === "/booking" || location.pathname === "/my-bookings";
   return (
     <>
       <Navbar />

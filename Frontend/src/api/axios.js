@@ -1,4 +1,4 @@
-import { GROUNDS, BOOKING_STATS, REVENUE_DATA, SAMPLE_BOOKINGS, SAMPLE_USERS, SLOT_RESTRICTIONS, NOTIFICATIONS } from "../utils/mockData";
+import { GROUNDS, BOOKING_STATS, REVENUE_DATA, SAMPLE_BOOKINGS, SAMPLE_USERS, SLOT_RESTRICTIONS } from "../utils/mockData";
 
 function getBookings() {
   const d = localStorage.getItem("nm_bookings");
@@ -31,6 +31,24 @@ function getRestrictions() {
 }
 function setRestrictions(r) { localStorage.setItem("nm_restrictions", JSON.stringify(r)); }
 
+const SEED_NOTIFICATIONS = [
+  { _id: "n1", name: "Priya Sharma", groundName: "Tennis Ball Ground", status: "pending", createdAt: "2025-07-13T07:20:00Z" },
+  { _id: "n2", name: "Arun Prasad", groundName: "Cricket Ball Ground", status: "completed", createdAt: "2025-07-12T14:00:00Z" },
+  { _id: "n3", name: "Deepa Venkat", groundName: "Tennis Ball Ground", status: "approved", createdAt: "2025-07-12T09:45:00Z" },
+  { _id: "n4", name: "Rajesh Kumar", groundName: "Cricket Ball Ground", status: "cancelled", createdAt: "2025-07-10T15:30:00Z" },
+];
+function getNotifications() {
+  const d = localStorage.getItem("nm_notifications");
+  if (!d) { localStorage.setItem("nm_notifications", JSON.stringify(SEED_NOTIFICATIONS)); return [...SEED_NOTIFICATIONS]; }
+  try { return JSON.parse(d); } catch { return [...SEED_NOTIFICATIONS]; }
+}
+function setNotifications(n) { localStorage.setItem("nm_notifications", JSON.stringify(n)); }
+function pushNotification(notification) {
+  const list = getNotifications();
+  list.unshift({ _id: "n" + Date.now(), createdAt: new Date().toISOString(), ...notification });
+  setNotifications(list);
+}
+
 function delay(ms = 200) { return new Promise((r) => setTimeout(r, ms)); }
 
 const api = {
@@ -38,7 +56,7 @@ const api = {
     await delay();
     if (url === "/admin/dashboard") return { data: BOOKING_STATS };
     if (url === "/admin/revenue") return { data: REVENUE_DATA };
-    if (url === "/admin/notifications") return { data: NOTIFICATIONS };
+    if (url === "/admin/notifications") return { data: getNotifications() };
 
     if (url === "/admin/bookings") {
       let list = getBookings();
@@ -182,6 +200,7 @@ const api = {
       const newUser = { _id: "u" + Date.now(), ...data, role: "customer", status: "active", createdAt: new Date().toISOString() };
       users.push(newUser);
       setUsers(users);
+      pushNotification({ name: data.name, groundName: "—", message: "New user registered" });
       const userData = { ...newUser };
       delete userData.password;
       return { data: { token: "mock_" + newUser._id, user: userData } };
@@ -213,6 +232,7 @@ const api = {
       };
       bookings.push(booking);
       setBookings(bookings);
+      pushNotification({ name: data.name, groundName: ground?.name || "Unknown", message: "booked" });
       return { data: booking };
     }
     if (url === "/admin/slots/block") {
@@ -254,6 +274,9 @@ const api = {
             users[userIdx].vaultBalance = (users[userIdx].vaultBalance || 0) + bookings[idx].totalPrice;
             setUsers(users);
           }
+        }
+        if (data.status === "rejected" || data.status === "cancelled") {
+          pushNotification({ name: bookings[idx].name, groundName: bookings[idx].groundName, message: data.status === "rejected" ? "was rejected" : "was cancelled" });
         }
         setBookings(bookings);
       }

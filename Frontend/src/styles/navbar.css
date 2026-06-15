@@ -101,6 +101,21 @@
   font-weight: 500;
 }
 
+.nav-my-bookings {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(13, 148, 136, 0.15);
+  color: #14b8a6;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.nav-my-bookings:hover {
+  background: rgba(13, 148, 136, 0.25);
+}
+
 .nav-logout {
   padding: 6px 14px;
   border-radius: 8px;
