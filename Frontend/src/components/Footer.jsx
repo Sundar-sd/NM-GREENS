@@ -3,6 +3,10 @@ import { HiPhone, HiMail, HiLocationMarker } from "react-icons/hi";
 import logo from "../assets/logo.png";
 
 export default function Footer() {
+  const contact = JSON.parse(
+    localStorage.getItem("nm_contact") ||
+      '{"phone":"+91 98765 43210","email":"info@nmgreens.com","address":"Chennai, Tamil Nadu"}'
+  );
   return (
     <footer className="footer">
       <div className="container">
@@ -25,9 +29,9 @@ export default function Footer() {
           <div>
             <h4>Contact</h4>
             <div className="footer-contact">
-              <p><HiPhone /> +91 98765 43210</p>
-              <p><HiMail /> info@nmgreens.com</p>
-              <p><HiLocationMarker /> Chennai, Tamil Nadu</p>
+              <p><HiPhone /> {contact.phone}</p>
+              <p><HiMail /> {contact.email}</p>
+              <p><HiLocationMarker /> {contact.address}</p>
             </div>
           </div>
         </div>

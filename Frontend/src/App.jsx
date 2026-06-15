@@ -12,6 +12,7 @@ import ManageGrounds from "./pages/admin/ManageGrounds";
 import SlotManagement from "./pages/admin/SlotManagement";
 import Pricing from "./pages/admin/Pricing";
 import GroundPricing from "./pages/admin/GroundPricing";
+import Settings from "./pages/admin/Settings";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="slots" element={<SlotManagement />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="pricing/:groundId" element={<GroundPricing />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );

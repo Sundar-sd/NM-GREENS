@@ -155,6 +155,11 @@ const api = {
 
     if (url === "/admin/slots/restrictions") return { data: getRestrictions() };
 
+    if (url === "/admin/contact") {
+      const d = JSON.parse(localStorage.getItem("nm_contact") || '{"phone":"+91 98765 43210","email":"info@nmgreens.com","address":"Chennai, Tamil Nadu"}');
+      return { data: d };
+    }
+
     console.warn("Unhandled GET:", url);
     return { data: [] };
   },
@@ -281,6 +286,10 @@ const api = {
     if (url === "/admin/gst-rate") {
       localStorage.setItem("nm_gst_rate", String(data.rate));
       return { data: { rate: data.rate } };
+    }
+    if (url === "/admin/contact") {
+      localStorage.setItem("nm_contact", JSON.stringify(data));
+      return { data };
     }
 
     if (url.startsWith("/admin/slots/block/")) {

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { HiChartBar, HiBookOpen, HiCollection, HiClock, HiCash } from "react-icons/hi";
+import { HiChartBar, HiBookOpen, HiCollection, HiClock, HiCash, HiCog } from "react-icons/hi";
 import logo from "../assets/logo.png";
 
 const links = [
@@ -8,6 +8,7 @@ const links = [
   { to: "/admin/grounds", icon: HiCollection, label: "Grounds" },
   { to: "/admin/slots", icon: HiClock, label: "Slots" },
   { to: "/admin/pricing", icon: HiCash, label: "Pricing" },
+  { to: "/admin/settings", icon: HiCog, label: "Settings" },
 ];
 
 export default function AdminSidebar() {
