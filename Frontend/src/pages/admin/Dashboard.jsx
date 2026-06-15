@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { HiBookOpen, HiCalendar, HiCash, HiUsers, HiClock, HiXCircle } from "react-icons/hi";
+import { HiBookOpen, HiCalendar, HiCash } from "react-icons/hi";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import api from "../../api/axios";
 
@@ -48,9 +48,6 @@ export default function Dashboard() {
     { icon: HiBookOpen, label: "Total Bookings", value: (filteredStats || stats).totalBookings, color: "#0d9488" },
     { icon: HiCalendar, label: "Today's Bookings", value: (filteredStats || stats).todayBookings, color: "#14b8a6" },
     { icon: HiCash, label: "Revenue", value: `₹${((filteredStats || stats).totalRevenue || 0).toLocaleString("en-IN")}`, color: "#f59e0b" },
-    { icon: HiUsers, label: "Active Users", value: (filteredStats || stats).activeUsers, color: "#6366f1" },
-    { icon: HiClock, label: "Available Slots", value: (filteredStats || stats).availableSlots, color: "#22c55e" },
-    { icon: HiXCircle, label: "Occupied Slots", value: (filteredStats || stats).occupiedSlots, color: "#ef4444" },
   ] : [];
 
   const today = new Date().toISOString().split("T")[0];
