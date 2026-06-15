@@ -173,17 +173,10 @@ export default function Dashboard() {
 
       <div className="admin-insights">
         {analytics?.mostBooked && (
-          <div className="insight-card glass">
+          <div className="insight-card glass full">
             <h3>Most Booked Ground</h3>
             <div className="insight-value">{analytics.mostBooked._id}</div>
             <p>{analytics.mostBooked.count} bookings</p>
-          </div>
-        )}
-        {analytics?.peakHours && analytics.peakHours.length > 0 && (
-          <div className="insight-card glass">
-            <h3>Peak Booking Hour</h3>
-            <div className="insight-value">{analytics.peakHours[0]._id}:00</div>
-            <p>{analytics.peakHours[0].count} bookings</p>
           </div>
         )}
       </div>

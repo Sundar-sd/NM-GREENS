@@ -179,6 +179,10 @@
   letter-spacing: 1px;
 }
 
+.insight-card.full {
+  grid-column: 1 / -1;
+}
+
 .insight-value {
   font-size: 1.6rem;
   font-weight: 800;
