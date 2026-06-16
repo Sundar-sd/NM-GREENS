@@ -134,16 +134,22 @@ export default function MyBookings() {
               <div className="booking-detail-prices">
                 <div className="bd-price-row">
                   <span>Subtotal</span>
-                  <span>₹{((selected.totalPrice || 0) - (selected.platformFee || 0) - (selected.gstAmount || 0)).toLocaleString("en-IN")}</span>
+                  <span>₹{((selected.totalPrice || 0) - (selected.platformFee || 0)).toLocaleString("en-IN")}</span>
                 </div>
                 <div className="bd-price-row">
                   <span>Platform Fee</span>
                   <span>₹{(selected.platformFee || 0).toLocaleString("en-IN")}</span>
                 </div>
-                <div className="bd-price-row">
-                  <span>GST (18%)</span>
-                  <span>₹{(selected.gstAmount || 0).toLocaleString("en-IN")}</span>
+                <div className="bd-price-row gst-row">
+                  <span>GST ({Number(localStorage.getItem("nm_gst_rate")) || 18}%)</span>
+                  <span className="gst-added">+₹{(selected.gstAmount || 0).toLocaleString("en-IN")}</span>
                 </div>
+                {selected.gstWaived && (
+                  <div className="bd-price-row discount-row">
+                    <span>Discount</span>
+                    <span className="gst-waived">−₹{(selected.gstAmount || 0).toLocaleString("en-IN")}</span>
+                  </div>
+                )}
                 {selected.paidFromVault > 0 && (
                   <div className="bd-price-row bd-price-vault">
                     <span>Paid from Vault</span>
